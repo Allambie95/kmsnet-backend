@@ -18,7 +18,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/ordenes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://kmsnet.cl",
+    "https://www.kmsnet.cl"
+})
 public class OrdenController {
 
     private final OrdenService ordenService;

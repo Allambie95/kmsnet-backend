@@ -10,7 +10,11 @@ import com.example.backend.BackEnd.service.NoticiaHomeService;
 
 @RestController
 @RequestMapping("/api/home")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://kmsnet.cl",
+    "https://www.kmsnet.cl"
+})
 public class NoticiaHomeController {
 
     @Autowired

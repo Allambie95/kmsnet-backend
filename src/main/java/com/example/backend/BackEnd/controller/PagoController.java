@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/pagos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://kmsnet.cl",
+    "https://www.kmsnet.cl"
+})
 public class PagoController {
 
     private final PagoService pagoService;
@@ -24,34 +28,34 @@ public class PagoController {
         return ResponseEntity.ok(resp);
     }
 
-   @RequestMapping(value = "/retorno", method = {RequestMethod.GET, RequestMethod.POST})
-public ResponseEntity<String> retornoWebpay(@RequestParam("token_ws") String token) {
+    @RequestMapping(value = "/retorno", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<String> retornoWebpay(@RequestParam("token_ws") String token) {
 
-    try {
-        String resultado = pagoService.confirmarPagoWebpay(token);
+        try {
+            String resultado = pagoService.confirmarPagoWebpay(token);
 
-        String destino = "AUTHORIZED".equalsIgnoreCase(resultado)
-                ? "http://localhost:5173/pago-exitoso"
-                : "http://localhost:5173/pago-error";
+            String destino = "AUTHORIZED".equalsIgnoreCase(resultado)
+                    ? "https://kmsnet.cl/pago-exitoso"
+                    : "https://kmsnet.cl/pago-error";
 
-        String html = "<html><body>" +
-                "<script>window.location.href='" + destino + "';</script>" +
-                "</body></html>";
+            String html = "<html><body>" +
+                    "<script>window.location.href='" + destino + "';</script>" +
+                    "</body></html>";
 
-        return ResponseEntity.ok()
-                .header("Content-Type", "text/html")
-                .body(html);
+            return ResponseEntity.ok()
+                    .header("Content-Type", "text/html")
+                    .body(html);
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
 
-        String html = "<html><body>" +
-                "<script>window.location.href='http://localhost:5173/pago-error';</script>" +
-                "</body></html>";
+            String html = "<html><body>" +
+                    "<script>window.location.href='https://kmsnet.cl/pago-error';</script>" +
+                    "</body></html>";
 
-        return ResponseEntity.ok()
-                .header("Content-Type", "text/html")
-                .body(html);
+            return ResponseEntity.ok()
+                    .header("Content-Type", "text/html")
+                    .body(html);
+        }
     }
-}
 }
